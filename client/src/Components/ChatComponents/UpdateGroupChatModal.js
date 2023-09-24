@@ -12,10 +12,11 @@ import {
   ModalFooter,
   ModalHeader,
   ModalOverlay,
+  Spinner,
   useDisclosure,
   useToast,
 } from "@chakra-ui/react";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { ChatState } from "../../Context/ChatProvider";
 import UserBadgeItem from "./UserBadgeItem";
 import axios from "axios";
@@ -29,7 +30,7 @@ const UpdateGroupChatModal = ({ fetchAgain, setfetchAgain, fetchMessages }) => {
   const [groupChatName, setgroupChatName] = useState();
   const [searchResult, setsearchResult] = useState([]);
 
-  const { user, selectedChat, setselectedChat } = ChatState();
+  const { user, selectedChat, setSelectedChat } = ChatState();
 
   const toast = useToast();
 
@@ -54,18 +55,18 @@ const UpdateGroupChatModal = ({ fetchAgain, setfetchAgain, fetchMessages }) => {
       };
 
       const { data } = await axios.put(
-        `/api/chat/groupremove`,
+        `/api/chat/removefromgroup`,
         { chatId: selectedChat._id, userId: user1._id },
         config
       );
 
-      user1._id === user._id ? setselectedChat() : setselectedChat(data);
+      user1._id === user._id ? setSelectedChat() : setSelectedChat(data);
       setfetchAgain(!fetchAgain);
       fetchMessages();
       setloading(false);
     } catch (error) {
       toast({
-        title: "Error in renaming",
+        title: "Error in removing",
         status: "error",
         duration: 5000,
         isClosable: true,
@@ -97,14 +98,14 @@ const UpdateGroupChatModal = ({ fetchAgain, setfetchAgain, fetchMessages }) => {
       };
 
       const { data } = await axios.put(
-        `/api/chat/rename`,
+        `/api/chat/renameGroup`,
         { chatId: selectedChat._id, chatName: groupChatName },
         config
       );
-
-      setselectedChat(data);
+      setSelectedChat(data);
       setfetchAgain(!fetchAgain);
       setrenameLoading(false);
+      setgroupChatName("");
     } catch (error) {
       toast({
         title: "Error in renaming",
@@ -118,7 +119,6 @@ const UpdateGroupChatModal = ({ fetchAgain, setfetchAgain, fetchMessages }) => {
       return;
     }
   };
-
   const handleSearch = async (query) => {
     setsearch(query);
 
@@ -135,7 +135,6 @@ const UpdateGroupChatModal = ({ fetchAgain, setfetchAgain, fetchMessages }) => {
       };
 
       const { data } = await axios.get(`/api/user/?search=${search}`, config);
-
       setloading(false);
       setsearchResult(data);
     } catch (error) {
@@ -182,17 +181,17 @@ const UpdateGroupChatModal = ({ fetchAgain, setfetchAgain, fetchMessages }) => {
       };
 
       const { data } = await axios.put(
-        `/api/chat/groupadd`,
+        `/api/chat/addtogroup`,
         { chatId: selectedChat._id, userId: userToAdd._id },
         config
       );
 
-      setselectedChat(data);
+      setSelectedChat(data);
       setfetchAgain(!fetchAgain);
       setloading(false);
     } catch (error) {
       toast({
-        title: "Failed to add someone",
+        title: "Failed to add new user",
         status: "error",
         duration: 5000,
         isClosable: true,
@@ -260,7 +259,7 @@ const UpdateGroupChatModal = ({ fetchAgain, setfetchAgain, fetchMessages }) => {
               />
             </FormControl>
             {loading ? (
-              <div>loading...</div>
+              <div style={{display:"flex", justifyContent:"center",marginTop:"10px"}}><Spinner /></div>
             ) : (
               searchResult
                 ?.slice(0, 4)

@@ -204,7 +204,7 @@ const SingleChat = ({ fetchAgain, setfetchAgain }) => {
               </>
             )}
           </Text>
-          <Box
+          {/* <Box
             display="flex"
             flexDir="column"
             justifyContent="flex-end"
@@ -245,7 +245,7 @@ const SingleChat = ({ fetchAgain, setfetchAgain }) => {
                 value={newMessage}
               />
             </FormControl>
-          </Box>
+          </Box> */}
         </>
       ) : (
         <Box
