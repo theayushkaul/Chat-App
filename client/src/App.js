@@ -7,7 +7,7 @@ import {
 import ChatPage from './Pages/ChatPage'
 const App = () => {
   return (
-    <div>
+    <div className='homepage'>
         <Routes>
           <Route path="/" element = { <HomePage/>}/>
           <Route path="/chats" element ={<ChatPage/>} />

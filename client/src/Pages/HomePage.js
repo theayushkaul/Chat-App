@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import {
     Box,
     Container,
@@ -12,9 +12,15 @@ import {
 // For login and Register : This is the Homepage which redirects to the chats page
 import Login from "../Components/Authentication/Login";
 import Signup from "../Components/Authentication/Signup";
+import { useNavigate } from 'react-router-dom';
 const HomePage = () => {
+    const navigate = useNavigate();
+    useEffect(() => {
+        const userInfo = JSON.parse(localStorage.getItem("userInfo"));
+        if (!userInfo) navigate("/chats");
+      }, [navigate]);
     return (
-        <div className='homepage'>
+        <div style={{width:"100vw"}}>
             <Container maxW="xl" centerContent>
                 <Box
                     p={3}

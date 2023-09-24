@@ -18,4 +18,21 @@ code {
   width: 100vw;
   background: url("https://source.unsplash.com/random/1600x900/?clouds") center/cover;
 }
+.messages{
+  display: flex;
+  flex-direction: column;
+  overflow-y: scroll;
+  scrollbar-width: none;
+}
+::-webkit-scrollbar {
+  width: 0px;
+}
 
+::-webkit-scrollbar-thumb {
+  background: rgba(136, 136, 136, 0.281);
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
