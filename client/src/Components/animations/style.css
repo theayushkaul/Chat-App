@@ -1,15 +1,15 @@
 .chat-bubble {
   background-color: #E6F8F1;
-  padding: 16px 28px;
+  padding: 16px 24px;
   border-radius: 20px;
   border-bottom-left-radius: 2px;
   display: inline-block;
+  margin: 5px 0px;
 }
 
 .typing {
   align-items: center;
   display: flex;
-  height: 17px;
 }
 
 .typing .dot {

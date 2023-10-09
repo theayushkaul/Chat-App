@@ -104,7 +104,6 @@ const Login = () => {
           setEmail("guest@example.com");
           setPassword("123456");
         }}
-        isLoading={loading}
       >
         Get Guest User Credentials
       </Button>

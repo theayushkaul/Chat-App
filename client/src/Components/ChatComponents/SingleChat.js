@@ -44,13 +44,10 @@ const SingleChat = ({ fetchAgain, setfetchAgain }) => {
           Authorization: `Bearer ${user.token}`,
         },
       };
-
-      const { data } = await axios.get(
-        `/api/message/${selectedChat._id}`,
+      const {data} = await axios.post(
+        `/api/messages/${selectedChat._id}`,{},
         config
-      );
-      console.log(data);
-
+        );
       setmessages(data);
       setloading(false);
 
@@ -74,10 +71,10 @@ const SingleChat = ({ fetchAgain, setfetchAgain }) => {
     });
     socket.on("typing", () => setisTyping(true));
     socket.on("stop typing", () => setisTyping(false));
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const sendMessage = async (e) => {
-    console.log("hiii");
     socket.emit("stop typing", selectedChat._id);
     if (e.key === "Enter" && newMessage) {
       try {
@@ -90,11 +87,10 @@ const SingleChat = ({ fetchAgain, setfetchAgain }) => {
 
         setnewMessage("");
         const { data } = await axios.post(
-          "/api/message",
+          "/api/messages",
           { content: newMessage, chatId: selectedChat._id },
           config
         );
-        console.log(data);
 
         socket.emit("new message", data);
 
@@ -114,6 +110,7 @@ const SingleChat = ({ fetchAgain, setfetchAgain }) => {
   useEffect(() => {
     fetchMessages();
     selectedChatCompare = selectedChat;
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedChat]);
 
 
@@ -151,21 +148,21 @@ const SingleChat = ({ fetchAgain, setfetchAgain }) => {
       settyping(false);
     }, 3000);
 
-    // if (!typing) {
-    //   settyping(true);
-    //   socket.emit("typing", selectedChat._id);
-    // }
-    // let lastTypingTime = new Date().getTime();
-    // var timerLength = 3000;
-    // setTimeout(() => {
-    //   var timeNow = new Date().getTime();
-    //   var timeDiff = timeNow - lastTypingTime;
-    //   if (timeDiff >= timerLength && typing) {
-    //     socket.emit("stop typing", selectedChat._id);
-    //     settyping(false);
-    //   }
-    //   console.log(isTyping);
-    // }, timerLength);
+    if (!typing) {
+      settyping(true);
+      socket.emit("typing", selectedChat._id);
+    }
+    let lastTypingTime = new Date().getTime();
+    var timerLength = 3000;
+    setTimeout(() => {
+      var timeNow = new Date().getTime();
+      var timeDiff = timeNow - lastTypingTime;
+      if (timeDiff >= timerLength && typing) {
+        socket.emit("stop typing", selectedChat._id);
+        settyping(false);
+      }
+      console.log(isTyping);
+    }, timerLength);
   };
 
   return (
@@ -204,7 +201,7 @@ const SingleChat = ({ fetchAgain, setfetchAgain }) => {
               </>
             )}
           </Text>
-          {/* <Box
+          <Box
             display="flex"
             flexDir="column"
             justifyContent="flex-end"
@@ -245,7 +242,7 @@ const SingleChat = ({ fetchAgain, setfetchAgain }) => {
                 value={newMessage}
               />
             </FormControl>
-          </Box> */}
+          </Box>
         </>
       ) : (
         <Box

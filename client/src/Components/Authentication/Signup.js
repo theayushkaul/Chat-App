@@ -40,7 +40,6 @@ const Signup = () => {
         body: data
       }).then((res) => res.json()).then(data => {
         setPic(data.url.toString())
-        console.log(data.url.toString())
       }).catch((err) => {
         console.log(err)
       })
@@ -88,7 +87,8 @@ const Signup = () => {
           "Content-type": "application/json"
         },
       }
-      const { data } = await axios.post("/api/user", { name, email, password, pic }, config)
+      const { data } = await axios.post("/api/user", { name:name, email:email, password:password, profilePic:pic }, config)
+      console.log(pic)
       toast({
         title: "Registration Successful",
         status: "success",

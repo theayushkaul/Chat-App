@@ -20,12 +20,15 @@ const ScrollableChats = ({ messages }) => {
                   cursor="pointer"
                   size="sm"
                   name={m.sender.name}
-                  src={m.sender.pic}
+                  src={m.sender.profilePic}
                 />
               </Tooltip>
             )}
             <span
               style={{
+                display:"flex",
+                justifyContent:"center",
+                alignItems:"center",
                 backgroundColor: `${
                   m.sender._id === user._id ? "#B9F5D0" : "#BEE3F8"
                 }`, 
@@ -33,7 +36,9 @@ const ScrollableChats = ({ messages }) => {
                 padding: "5px 15px",
                 maxWidth: "75%",
                 marginLeft : isSameSenderMargin(messages,m,i, user._id),
-                marginTop : isSameUser(messages,m,i,user._id) ? 3 : 10
+                marginTop : isSameUser(messages,m,i,user._id) ? 3 : 10,
+                fontSize:"small",
+                fontWeight:"500"
               }}
             >{m.content}</span>
           </div>
